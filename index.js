@@ -59,6 +59,31 @@ app.get("/api/eden/video/status/:jobId", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});  }
+});
+
+// Route to check video status
+app.get("/api/eden/video/status/:jobId", async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const edenRes = await fetch(`https://api.edenai.run/v2/video/status/${jobId}`, {
+      headers: {
+        "Authorization": `Bearer ${process.env.EDEN_API_KEY}`
+      }
+    });
+
+    const data = await edenRes.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Render requires PORT from env
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });  try {
     const { jobId } = req.params;
 
